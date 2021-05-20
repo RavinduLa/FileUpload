@@ -6,6 +6,10 @@ import java.io.IOException;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -66,5 +70,31 @@ public class FileService {
 		}
 		
 		return "success";
+	}
+	
+	public HttpEntity<byte[]> getFileAsHttp(String id) {
+		FileModel2 fileModel2 = new FileModel2();
+		fileModel2 = fileRepo.findById(id).get();
+		Binary document =  	fileModel2.getFile();
+		
+		String fileName = "aaa";
+		
+		if(document != null) {
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+			
+			ContentDisposition contentDisposition = ContentDisposition.builder("inline")
+					.filename(fileName).build();
+			
+			headers.setContentDisposition(contentDisposition);
+			
+			return new HttpEntity<byte[]>(document.getData(),headers);
+			
+		}
+		else
+		{
+			System.out.println("Document is null when retreiveing from the database");
+			return null;
+		}
 	}
 }
