@@ -77,7 +77,7 @@ public class FileService {
 		fileModel2 = fileRepo.findById(id).get();
 		Binary document =  	fileModel2.getFile();
 		
-		String fileName = "aaa";
+		String fileName = "bbb";
 		
 		if(document != null) {
 			HttpHeaders headers = new HttpHeaders();

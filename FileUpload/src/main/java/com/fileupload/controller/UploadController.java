@@ -3,6 +3,7 @@ package com.fileupload.controller;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -72,6 +73,11 @@ public class UploadController {
 	public String retrieveFile( @RequestParam("id") String id) {
 		String out = fileService.getFile(id);
 		return out;
+	}
+	
+	@PostMapping("/httpFileRetreive")
+	public HttpEntity<byte[]> retrieveAsHttp (@RequestParam("id")  String id){
+		return fileService.getFileAsHttp(id);
 	}
 	
 
